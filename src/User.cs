@@ -48,7 +48,7 @@ namespace CBank
         foreach( var log in userLogs){
 
           string[] logInfo = log.Split(", ");
-
+          Console.WriteLine(log);
           string appendText = logInfo[0] + delimiter + logInfo[1] + delimiter + logInfo[2] + delimiter 
           + logInfo[3] + delimiter 
           + logInfo[4] + delimiter 

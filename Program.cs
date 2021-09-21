@@ -22,6 +22,7 @@ namespace C_Bank
             NewUserSavings.Deposit(70.00);
 
             NewUser.WriteLogs();
+            NewUser.WriteToFile();
 
         }
     }

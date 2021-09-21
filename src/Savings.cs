@@ -27,12 +27,12 @@ namespace CBank
                 Balance+=depositAmount;
                 if(IntialDeposit==true){
                     Bank.Users.Add(Customer);
-                    Customer.userLogs.Add($"{Customer.name}, Savings, {localDate}, Initial Deposit, ${depositAmount}, Success, Balance: ${Balance}");
+                    Customer.userLogs.Add($"{Customer.name}, Savings, {localDate}, Initial Deposit, ${depositAmount}, Success, Balance: ${Balance}, Account is open");
                     IntialDeposit=false;
                     return Balance;
                 }else{
 
-                    Customer.userLogs.Add($"{Customer.name}, Savings, {localDate}, Deposit, ${depositAmount}, Success, Balance: ${Balance}");
+                    Customer.userLogs.Add($"{Customer.name}, Savings, {localDate}, Deposit, ${depositAmount}, Success, Balance: ${Balance}, Account is open");
                     return Balance;
                 }
             } else {
@@ -48,17 +48,17 @@ namespace CBank
                 if(Balance>=withdrawalAmount){
 
                     Balance-=withdrawalAmount;
-                    Customer.userLogs.Add($"{Customer.name}, Savings, {localDate}, Withdrawal, ${withdrawalAmount}, Success, Balance: ${Balance}");
+                    Customer.userLogs.Add($"{Customer.name}, Savings, {localDate}, Withdrawal, ${withdrawalAmount}, Success, Balance: ${Balance}, Account is open");
                     return Balance;
 
                 }else{
 
-                    Customer.userLogs.Add($"{Customer.name}, Savings, {localDate}, Withdrawal, ${withdrawalAmount}, Failure, Balance: ${Balance}");
+                    Customer.userLogs.Add($"{Customer.name}, Savings, {localDate}, Withdrawal, ${withdrawalAmount}, Failure, Balance: ${Balance}, Account is open");
                     Balance-=50.00;
                     FeeCounter += 1;
-                    Customer.userLogs.Add($"{Customer.name}, Savings, {localDate}, Fee, $50, Success, ${Balance}");
+                    Customer.userLogs.Add($"{Customer.name}, Savings, {localDate}, Fee, $50, Success, ${Balance}, Account is open");
                     if(FeeCounter == 3){
-                        Customer.userLogs.Add($"{Customer.name}, Savings, {localDate}, Insufficient funds, ${withdrawalAmount}, Failure, Balance: ${Balance}, Account closed.");
+                        Customer.userLogs.Add($"{Customer.name}, Savings, {localDate}, Insufficient funds, ${withdrawalAmount}, Failure, Balance: ${Balance}, Account is closed");
                         IsAccountOpen = false;
                     }
                     return Balance;
