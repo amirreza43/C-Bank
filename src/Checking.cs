@@ -2,42 +2,68 @@ using System;
 
 namespace CBank
 {
-    public class Checking : User, IAccount{
-        
-        public double Balance;
+    public class Checking : IAccount{
+        public User Customer;
 
-       hasChecking=true;
-
-        public bool IntialDeposit =true;
-        public double deposit(double depositAmount){
-
-            Balance+=depositAmount;
-
-            if(IntialDeposit==true){
-                userLogs.Add($"{name}, date, Initial Deposit, ${depositAmount}, Success, {Balance}");
-                IntialDeposit=false;
-                return Balance;
-            }else{
-
-                userLogs.Add($"{name}, date, Deposit, ${depositAmount}, Success, {Balance}");
-                return Balance;
-            }
-
+        public Bank Bank;
+        public Checking(User NewUser, Bank Bank){
+            Customer = NewUser;
+            Customer.hasChecking = true;
+            this.Bank = Bank;
         }
 
-        public double withdraw(double withdrawalAmount){
+        public double Balance;
 
-            if(Balance>=withdrawalAmount){
+        public int FeeCounter = 0;
 
-                Balance-=withdrawalAmount;
-                 userLogs.Add($"{name}, date, Withdrawl, ${withdrawalAmount}, Success, {Balance}");
-                 return Balance;
+        public bool AccountStatus = true;
 
-            }else{
+        public bool IntialDeposit = true;
+        public DateTime localDate;
 
-                userLogs.Add($"{name}, date, Withdrawl, ${withdrawalAmount}, Failure, {Balance}");
-                Balance-=50.00;
-                userLogs.Add($"{name}, date, Fee, $50, Success, {Balance}");
+        public double Deposit(double depositAmount){
+            localDate = DateTime.Now;
+            if(AccountStatus){
+                Balance+=depositAmount;
+                if(IntialDeposit==true){
+                    Bank.Users.Add(Customer);
+                    Customer.userLogs.Add($"{Customer.name}, Checking, {localDate}, Initial Deposit, ${depositAmount}, Success, Balance: ${Balance}");
+                    IntialDeposit=false;
+                    return Balance;
+                }else{
+
+                    Customer.userLogs.Add($"{Customer.name}, Checking, {localDate}, Deposit, ${depositAmount}, Success, Balance: ${Balance}");
+                    return Balance;
+                }
+            } else {
+                    Customer.userLogs.Add($"{Customer.name}, Checking, {localDate}, Deposit, ${depositAmount}, Failure, Balance: ${Balance}, Account is closed");
+                    return Balance;
+            }
+        }
+
+        public double Withdraw(double withdrawalAmount){
+            localDate = DateTime.Now;
+            if(AccountStatus){
+
+                if(Balance>=withdrawalAmount){
+                    Balance-=withdrawalAmount;
+                    Customer.userLogs.Add($"{Customer.name}, Checking, {localDate}, Withdrawal, ${withdrawalAmount}, Success, Balance: ${Balance}");
+                    return Balance;
+
+                }else{
+
+                    Customer.userLogs.Add($"{Customer.name}, Checking, {localDate}, Withdrawal, ${withdrawalAmount}, Failure, Balance: ${Balance}");
+                    Balance-=50.00;
+                    FeeCounter += 1;
+                    Customer.userLogs.Add($"{Customer.name}, Checking, {localDate}, Fee, $50, Success, Balance: ${Balance}");
+                    if(FeeCounter == 3){
+                        Customer.userLogs.Add($"{Customer.name}, Checking, {localDate}, Insufficient funds, Account closed.");
+                        AccountStatus = false;
+                    }
+                    return Balance;
+                }
+            }else {
+                Customer.userLogs.Add($"{Customer.name}, Checking, {localDate}, Withdrawal, ${withdrawalAmount}, Failure, Balance: ${Balance}, Account is closed");
                 return Balance;
             }
         }

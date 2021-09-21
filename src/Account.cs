@@ -2,8 +2,8 @@ namespace CBank
 {
     public interface IAccount
     {
-        public double deposit(double depositAmount);
-        public double withdraw(double withdrawalAmount);
+        public double Deposit(double depositAmount);
+        public double Withdraw(double withdrawalAmount);
 
     }
 }

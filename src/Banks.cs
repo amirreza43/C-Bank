@@ -1,7 +1,11 @@
+using System;
+using System.Collections.Generic;
+
 namespace CBank
 {
-    public abstract class Bank{
+    public class Bank{
       public string BankName;
-      public string[] users;
+      public List<User> Users= new List<User>();
+
     }
 }
